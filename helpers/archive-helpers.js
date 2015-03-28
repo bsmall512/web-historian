@@ -26,16 +26,40 @@ exports.initialize = function(pathsObj){
 // modularize your code. Keep it clean!
 
 exports.readListOfUrls = function(){
+	// iterate through file to see if url is in there
+	// take file, turn it from a string into an array
+	// if callback is supplied, use callback on array(sappluy this?)
+	
+    var encoding = {encoding: 'utf8'};
+	fs.readFile(exports.paths.list, encoding, function(err, data){
+      if(!err){
+        var resultsArray = data.toString().split('\n');
+      }
+      if(callback){
+      	callback(resultsArray);
+      }
+	})
+
 };
 
 exports.isUrlInList = function(){
+	// call readListOF URLS and provide callback that iterates trhoguh sites to find URL
+	// if Found, invoke callback on url
+	_.each(exports.readListOfUrls, function(item){
+		if(item){
+			callback(item)
+			}
+		})
 };
 
 exports.addUrlToList = function(){
+
 };
 
 exports.isUrlArchived = function(){
+
 };
 
 exports.downloadUrls = function(){
+
 };
