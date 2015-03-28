@@ -16,25 +16,21 @@ exports.serveAssets = function(response, asset, callback) {
   // css, or anything that doesn't change often.)
 	   var encoding = {encoding: 'utf8'};
      fs.readFile(archive.paths.siteAssets + asset, encoding, function(err, data){ 
-       if(err){
-        fs.readFile(archive.pate.archiveSites + asset, encode, function(err, data){
-          if(err){
-            callback ? callback() : exports.sendResponse(response, '404', 404);
-          }
-          else{
-            exports.sendResponse(response, data);
-          }
-        })
-       }
-       else{
-        exports.sendResponse(response, data);
-       }
-     })
-
-	}
-};
+        callback(data)
+       })
+   };
 
 
 
 // As you progress, keep thinking about what helper functions you can put here!
 // helper function 404
+       // if(err){
+       //  fs.readFile(archive.pate.archiveSites + asset, encode, function(err, data){
+       //    if(err){
+       //      callback ? callback() : exports.sendResponse(response, '404', 404);
+       //    }
+       //    else{
+       //      callback(fs.readFile())
+       //    }
+       //  })
+       // }

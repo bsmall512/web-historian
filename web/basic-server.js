@@ -19,9 +19,9 @@ if (module.parent) {
 }
 
 
-var staticServer = new stat.Server();
+// var staticServer = new stat.Server();
 
-var serverStatic = http.createServer(function(request, response) {
-	staticServer.serve(request,response);
-})
+// var serverStatic = http.createServer(function(request, response) {
+// 	staticServer.serve(request,response);
+// })
 

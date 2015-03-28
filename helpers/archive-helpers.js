@@ -25,41 +25,83 @@ exports.initialize = function(pathsObj){
 // The following function names are provided to you to suggest how you might
 // modularize your code. Keep it clean!
 
-exports.readListOfUrls = function(){
+exports.readListOfUrls = function(callback){
 	// iterate through file to see if url is in there
 	// take file, turn it from a string into an array
 	// if callback is supplied, use callback on array(sappluy this?)
 	
-    var encoding = {encoding: 'utf8'};
-	fs.readFile(exports.paths.list, encoding, function(err, data){
-      if(!err){
-        var resultsArray = data.toString().split('\n');
-      }
+	fs.readFile(exports.paths.list,  function(err, sites){
+        if(!err){
+        sites = sites.toString().split('\n');
+         }
       if(callback){
-      	callback(resultsArray);
+      	callback(sites);
       }
 	})
 
 };
 
-exports.isUrlInList = function(){
-	// call readListOF URLS and provide callback that iterates trhoguh sites to find URL
-	// if Found, invoke callback on url
-	_.each(exports.readListOfUrls, function(item){
-		if(item){
-			callback(item)
-			}
-		})
+exports.isUrlInList = function(url, callback){
+	var found = false
+    
+    exports.readListOfUrls(function(sites){
+      for(var i = 0; i < sites.length; i++){
+     	if(sites[i]===url){
+     	  found = true;
+     	}
+      }
+    });
+    callback(found);
 };
 
-exports.addUrlToList = function(){
+exports.addUrlToList = function(url, callback){
+	//if(exports.path)
+	var urlToAdd =  url + '\n';
+	fs.writeFile(exports.paths.list, urlToAdd, function (err) {
+		if(err){
+			return console.log(err);
+		}
+		// } else {
+		// 	console.log('file saved');
+		// }
+	})
+	callback(urlToAdd);
 
 };
 
-exports.isUrlArchived = function(){
+exports.isUrlArchived = function(url, callback){
+  var found = false
+  
+  fs.readdir(exports.paths.archivedSites,  function(err, files){
+      for(var i = 0; i < files.length; i++){
+     	if(files[i]===url){
+     	  found = true;
+     	}
+      }
+	})
 
+    callback(found);
 };
 
-exports.downloadUrls = function(){
+exports.downloadUrls = function(url, callback){
+  
+  
+  var file = fs.createWriteStream(exports.paths.archivedSites/+ url);
+  var request = http.get("http://i3.ytimg.com/vi/J---aiyznGQ/mqdefault.jpg", function(response) {
+  response.pipe(file);
+});
+};
 
+
+// var file_name = url.parse(file_url).pathname.split('/').pop();
+// var file = fs.createWriteStream(DOWNLOAD_DIR + file_name);
+
+// http.get(options, function(res) {
+//     res.on('data', function(data) {
+//             file.write(data);
+//         }).on('end', function() {
+//             file.end();
+//             console.log(file_name + ' downloaded to ' + DOWNLOAD_DIR);
+//         });
+//     });
 };
